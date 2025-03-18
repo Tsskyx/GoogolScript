@@ -1,2 +1,2 @@
-# googolscript
-An intuitive algorithmic interpreter for solely theoretical computational hobbyists.
+# Googolscript
+Information will be added here as time passes.
