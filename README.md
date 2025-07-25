@@ -1,2 +1,2 @@
-# googolscript
+# Googolscript
 My own programming language.
