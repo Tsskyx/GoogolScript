@@ -32,7 +32,7 @@ def main():
             result: GS_Node = evaluate(gs_tree)
             print(str(result))
         except UnexpectedInput as e:
-            print(e.get_context(line))
+            print("Error on input\n" + e.get_context(line))
         except (EOFError, KeyboardInterrupt): # can un-parenthesize in Python 3.14
             break
         except Exception as e:
