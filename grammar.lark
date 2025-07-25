@@ -1,0 +1,15 @@
+top: null | bool | int | string
+
+null: NULL
+NULL: "NULL"
+
+bool: BOOL
+BOOL: "TRUE" | "FALSE"
+
+int: DIGIT+
+DIGIT: /[0-9]/
+
+string: "\"" (STD_CHAR | "\\" ESC_CHAR | "\\u{" HEX_CODE "}")* "\""
+STD_CHAR: /[^"\\\n\r\t]/
+ESC_CHAR: /[nt"\\]/
+HEX_CODE: /[0-9A-Fa-f]+/
