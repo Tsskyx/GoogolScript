@@ -1,5 +1,5 @@
 from lark import Lark
-from lark.exceptions import UnexpectedInput
+from lark.exceptions import UnexpectedCharacters, UnexpectedToken, UnexpectedEOF
 from transformer import transform
 from gs_nodes import GS_Node
 from evaluator import evaluate
@@ -10,15 +10,14 @@ def main():
     
     parser = Lark(
         grammar,
-        parser = "lalr",
         debug = True,
         strict = True,
         propagate_positions = True,
         start = "top"
     )
 
-    print("Welcome to GoogolScript v0.0.0")
-    print("For documentation, please refer to the grammar file.")
+    print("Welcome to GoogolScript v0.0.1")
+    print("For documentation, please refer to the source code.")
     print("Type 'exit' or 'quit' to leave.")
     print("Made by Tsskyx")
 
@@ -31,8 +30,12 @@ def main():
             gs_tree = transform(parse_tree)
             result: GS_Node = evaluate(gs_tree)
             print(str(result))
-        except UnexpectedInput as e:
-            print("Error on input\n" + e.get_context(line))
+        except UnexpectedCharacters as e:
+            print("Error: unexpected characters\n" + e.get_context(line))
+        except UnexpectedToken as e:
+            print("Error: unexpected token\n" + e.get_context(line))
+        except UnexpectedEOF as e:
+            print("Error: unexpected EOF\n" + e.get_context(line))
         except (EOFError, KeyboardInterrupt): # can un-parenthesize in Python 3.14
             break
         except Exception as e:

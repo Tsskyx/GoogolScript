@@ -24,9 +24,31 @@ class GS_Bool(GS_Node):
     def __init__(self, value: str): self.value: str = value
     def __str__(self) -> str: return self.value
 
+# find a way to handle errors properly
+# like a GS_Node dispatch method before actually initializing the final node object
 class GS_Int(GS_Node):
-    def __init__(self, value: list[int]): self.value: list[int] = self.encode(value)
-    def __str__(self) -> str: return "".join(str(digit) for digit in self.decode(self.value))
+    def __init__(self, sign_str: str, base_str: str, main_str: str):
+        def get_digit(c: str, base: int) -> int:
+            if "0" <= c <= "9": return ord(c) - ord("0")
+            if "A" <= c <= "Z": return ord(c) - ord("A")
+            if "a" <= c <= "z": return ord(c) - ord("a") if base > 36 else ord(c.upper()) - ord("A")
+            if c == "$": return 62
+            if c == "_": return 63
+            raise SyntaxError("Syntax error: The grammar was correct, but this GS code is invalid!")
+        base = int(base_str) if base_str else 10
+        if not 2 <= base <= 64:
+            raise SyntaxError("Syntax error: The grammar was correct, but this GS code is invalid!")
+        value = []
+        for c in main_str:
+            if c == "'": continue
+            d = get_digit(c, base)
+            if d >= base:
+                raise SyntaxError("Syntax error: The grammar was correct, but this GS code is invalid!")
+            value.append(d)
+        self.value = self.encode(value, base)
+        self.neg = sign_str == "-" and self.value != []
+
+    def __str__(self) -> str: return ("-" if self.neg else "") + "".join(str(digit) for digit in self.decode(self.value))
 
     def encode(self, digits: list[int], base: int = 10) -> list[int]:
         def halve(orig: list[int]):

@@ -12,10 +12,17 @@ class GS_Transformer(Transformer):
     
     def bool(self, children: list[Token]) -> GS_Bool:
         return GS_Bool(children[0].value)
-    
-    def int(self, children: list[Token]) -> GS_Int:
-        digits = [int(token.value) for token in children]
-        return GS_Int(digits)
+
+    def b_int(self, children: list[Token]) -> GS_Int:
+        sign, base, main = "+", "10", ""
+        for token in children:
+            value: str = token.value
+            match token.type:
+                case "SIGN": sign = value
+                case "BASE": base = value
+                case "INT10": main = value
+                case "INT64": main = value
+        return GS_Int(sign, base, main)
     
     def string(self, children: list[Token]) -> GS_String:
         chars: list[str] = []
