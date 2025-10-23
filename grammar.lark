@@ -18,4 +18,3 @@ STD_CHAR: /[^"\\\n\r\t]/
 ESC_CHAR: /[nt"\\]/
 HEX_CODE: /[0-9A-Fa-f]+/
 string: "\"" (STD_CHAR | "\\" ESC_CHAR | "\\u{" HEX_CODE "}")* "\""
-// implement \u{str} as \u{int}?
