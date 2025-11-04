@@ -14,7 +14,7 @@ See below regarding instructions for what is already implemented, as well as a l
 
 ## Instructions
 
-For now, only a REPL that echoes literals is implemented. To run it, run googolscript.py.
+For now, only a REPL that echoes literals is implemented. To run it, run the file googolscript.py inside the repl folder.
 
 For documentation, simply read the source code, it's fairly basic for now.
 
