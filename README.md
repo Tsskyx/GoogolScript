@@ -64,6 +64,7 @@ For documentation, simply read the source code, it's fairly basic for now.
 
 * Alphanumeric characters + underscore, case-sensitive, cannot start with a number
 * Underscore acts as a throwaway variable
+* Maybe an apostrophe at the end? (like a variable prime symbol)
 
 #### Naming conventions:
 
