@@ -328,3 +328,6 @@ For documentation, simply read the source code, it's fairly basic for now.
 * define a piece of code without evaluating it using ::=, e.g. x ::= 3+5 will yield the AST of 3+5
 * another way to do that would be to surround the code in question with `` (figure out how to make this syntax recursive, similar to nested comments)
 * .identifier == access properties of the interpreter
+
+## Other
+* lone expression -> print it (both for REPL and normal)
