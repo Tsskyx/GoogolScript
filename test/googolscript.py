@@ -1,8 +1,9 @@
 import sys
+
 from parser import parse
 from evaluator import evaluate
 
-def main():
+def main() -> int:
     match len(sys.argv):
         case 1:
             print("Welcome to the GoogolScript 0.0.2 REPL.")
@@ -12,8 +13,9 @@ def main():
             while evaluate(parse(input("> "))): pass
         case 2:
             with open(sys.argv[1], "r", encoding = "utf-8") as file:
-                source = file.read()
-            evaluate(parse(source))
+                evaluate(parse(file.read()))
         case _: raise Exception("Unexpected number of arguments")
+    return 0
 
-if __name__ == "__main__": main()
+if __name__ == "__main__":
+    main()

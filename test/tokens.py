@@ -1,52 +1,35 @@
 from enum import Enum, auto
-from rules import NT
-from grammar_syntax import Seq, Alt
 from dataclasses import dataclass
-from regexes import token_regex
+import re
 
-# token types
 class T(Enum):
-    NEWLINE = auto()
-    WS      = auto()
-    LPAREN  = auto()
-    RPAREN  = auto()
-    PLUS    = auto()
-    MINUS   = auto()
-    TIMES   = auto()
-    DIV     = auto()
-    MOD     = auto()
-    EQ      = auto()
-    NE      = auto()
-    GT      = auto()
-    LT      = auto()
-    GE      = auto()
-    LE      = auto()
-    SEMI    = auto()
-    WALRUS  = auto()
-    INT     = auto()
-    LABEL   = auto()
-    NOT     = auto()
-    AND     = auto()
-    OR      = auto()
-    IMPL    = auto()
-    EQUIV   = auto()
-    IF      = auto()
-    ELSE    = auto()
-    WHILE   = auto()
-    THEN    = auto()
-    END     = auto()
-    SKIP    = auto()
-    EXIT    = auto()
-    PRINT   = auto()
-    INPUT   = auto()
-    EOF     = auto()
+    # labels and literals
+    LABEL = auto(); INT = auto()
 
-    def __and__(self, other: "T | NT"): return Seq(self, other)
-    def __or__(self, other: "T | NT"): return Alt(Seq(self), Seq(other))
+    # whitespace
+    NEWLINE = auto(); WS = auto()
+
+    # structural syntax
+    LPAREN = auto(); RPAREN = auto(); SEMI = auto(); WALRUS = auto()
+
+    # arithmetic operators
+    PLUS = auto(); MINUS = auto(); TIMES = auto(); DIV = auto(); MOD = auto()
+
+    # comparison operators
+    EQ = auto(); NE = auto(); GT = auto(); LT = auto(); GE = auto(); LE = auto()
+
+    # logical operators
+    NOT = auto(); AND = auto(); OR = auto(); IMPL = auto(); EQUIV = auto()
+
+    # command keywords
+    IF = auto(); ELSE = auto(); WHILE = auto(); THEN = auto(); END = auto(); EXIT = auto(); PRINT = auto(); INPUT = auto()
+
+    # non-syntax
+    EOF = auto()
 
 keyword_map = {
     "NOT": T.NOT, "AND": T.AND, "OR": T.OR, "IMPL": T.IMPL, "EQUIV": T.EQUIV,
-    "IF": T.IF, "ELSE": T.ELSE, "WHILE": T.WHILE, "THEN": T.THEN, "END": T.END, "SKIP": T.SKIP,
+    "IF": T.IF, "ELSE": T.ELSE, "WHILE": T.WHILE, "THEN": T.THEN, "END": T.END,
     "PRINT": T.PRINT, "INPUT": T.INPUT, "EXIT": T.EXIT,
 }
 
@@ -67,6 +50,28 @@ class Token:
     line: tuple[int, int] = (0, 0)
     col: tuple[int, int] = (0, 0)
     def __repr__(self): return str(vars(self))
+
+token_regex = {k : re.compile(v) for k, v in {
+    T.NEWLINE : r"\n",
+    T.WS      : r"[ \t]+",
+    T.LPAREN  : r"\(",
+    T.RPAREN  : r"\)",
+    T.PLUS    : r"\+",
+    T.MINUS   : r"-",
+    T.TIMES   : r"\*",
+    T.DIV     : r"/",
+    T.MOD     : r"%",
+    T.EQ      : r"==",
+    T.NE      : r"!=",
+    T.GT      : r">",
+    T.LT      : r"<",
+    T.GE      : r">=",
+    T.LE      : r"<=",
+    T.SEMI    : r";",
+    T.WALRUS  : r":=",
+    T.INT     : r"[0-9]+",
+    T.LABEL   : r"[A-Za-z_][A-Za-z_0-9]*",
+}.items()}
 
 def tokenize(source: str):
     tokens: list[Token] = []
@@ -118,3 +123,27 @@ def normalize_terminators(tokens: list[Token]):
         new_tokens.append(token)
         prev_token = token
     return new_tokens
+
+class NT(Enum):
+    prog      = auto()
+    cmd_sep   = auto()
+    cmd       = auto()
+    cmd_def   = auto()
+    cmd_input = auto()
+    cmd_if    = auto()
+    cmd_ifel  = auto()
+    cmd_while = auto()
+    cmd_print = auto()
+    cmd_exit  = auto()
+    prog_opt  = auto()
+    form      = auto()
+    form_elem = auto()
+    bool_op1  = auto()
+    bool_op2  = auto()
+    pred      = auto()
+    cmp       = auto()
+    term      = auto()
+    term_one  = auto()
+    term_op1  = auto()
+    term_op2  = auto()
+    lit       = auto()
