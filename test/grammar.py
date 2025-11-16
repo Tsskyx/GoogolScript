@@ -108,13 +108,15 @@ rules = [
     S(NT.lit)       > S(T.INT) | S(T.LABEL),
 ]
 
-type Grammar = dict[NT, list[list[T | NT]]]
+type Grammar = dict[NT, tuple[tuple[T | NT, ...], ...]]
 
 grammar: Grammar = dict()
 
 for rule in rules:
     L_seq = rule.left.seq
     if len(L_seq) == 1 and type(L_seq[0].symb) is NT:
-        grammar[L_seq[0].symb] = [[seq.symb for seq in alt.seq] for alt in rule.right.alt]
+        grammar[L_seq[0].symb] = tuple(tuple(seq.symb for seq in alt.seq) for alt in rule.right.alt)
     else:
         raise Exception("Cannot make context-free grammar from the specified rules")
+
+start = NT.prog

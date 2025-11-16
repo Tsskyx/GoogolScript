@@ -331,3 +331,5 @@ For documentation, simply read the source code, it's fairly basic for now.
 
 ## Other
 * lone expression -> print it (both for REPL and normal)
+* implement while/for-else as while/for-then or while/for-after
+* maybe allow redefining keywords? if := 3 --> cannot use "if" as a keyword now
