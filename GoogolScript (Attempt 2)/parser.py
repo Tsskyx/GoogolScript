@@ -65,7 +65,7 @@ def check_undefined_NTs(grammar: Grammar) -> set[NT]:
 def check_unused_NTs(grammar: Grammar) -> set[NT]:
     L_NT = {L for L in grammar.keys()}
     R_NT: set[NT] = {symb for R in grammar.values() for prod in R for symb in prod if type(symb) is NT}
-    return L_NT - R_NT
+    return L_NT - R_NT - {NT.prog}
 
 def check_unreachable_rules(grammar: Grammar, start: NT) -> set[NT]:
     reachable = {start}
@@ -158,7 +158,10 @@ def parse(source: str) -> AST:
                 if not prods:
                     raise Exception(f"No rule for ({top.name}, {next.name}) in parse table")
                 if len(prods) > 1:
-                    raise Exception(f"Conflicting productions for ({top.name}, {next.name}): {"\n".join(str(prod) for prod in prods)}")
+                    raise Exception(
+                        f"Conflicting productions for ({top.name}, {next.name}):\n"
+                        + "\n".join(" ".join(str(symb) for symb in prod) for prod in prods)
+                    )
                 for symb in reversed(tuple(prods)[0]):
                     stack.append(symb)
     if next is not T.EOF: raise Exception("Input remaining after stack empty")
