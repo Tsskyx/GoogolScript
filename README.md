@@ -48,3 +48,5 @@ Available instructions (30):
 - JGE_C(x, c, i): jump to i if [x] >= c
 - JGE_R(x, y, i): jump to i if [x] >= [y]
 ```
+
+The included example program is an implementation of [Bashicu Matrix System](https://kyodaisuu.github.io/basmat/definition.html).
