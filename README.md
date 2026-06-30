@@ -50,3 +50,41 @@ Available instructions (30):
 ```
 
 The included example program is an implementation of [Bashicu Matrix System](https://kyodaisuu.github.io/basmat/definition.html).
+
+Examples:
+
+```
+input: rows, cols, expansion index, matrix values
+output: expanded matrix values
+
+2, 2, 4, 0 0 1 1
+0 0 1 0 2 0 3 0 4 0
+
+3, 5, 1, 0 0 0 1 1 1 2 0 0 3 1 0 1 1 1
+0 0 0 1 1 1 2 0 0 3 1 0 1 1 0 2 2 1 3 0 0 4 1 0
+
+4, 8, 1, 0 0 0 0 1 1 1 1 2 2 2 1 3 3 2 1 4 3 2 0 5 4 3 1 4 2 2 1 5 3 2 1
+0 0 0 0 1 1 1 1 2 2 2 1 3 3 2 1 4 3 2 0 5 4 3 1 4 2 2 1 5 3 2 0 6 4 3 1 7 5 4 1 8 6 4 1 9 6 4 0 10 7 5 1 9 5 4 1
+```
+
+## 0.0.1
+
+Operators, relations, and data modes (imm/reg) were extracted into separate inductive types.
+
+The program is no longer a list of commands, but a Top node with variadic number of Cmd and Label arguments.
+
+Labels carry strings instead of ints now.
+
+The command list has been reduced to the following:
+
+```
+- LABEL(x)
+- MOV(x, y, type)
+- LOAD(x, y)
+- STORE(x, y)
+- OP(op, x, y, z, type)
+- JMP(x)
+- JIF(rel, x, y, i, type)
+- READ(x)
+- WRITE(x)
+```

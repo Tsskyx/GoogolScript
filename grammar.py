@@ -1,34 +1,25 @@
-grammar = {
-    "Cmd": {
-        "READ": 1,
-        "WRITE": 1,
-        "LABEL": 1,
-        "JMP": 1,
-        "MOV_C": 2,
-        "MOV_R": 2,
-        "LOAD": 2,
-        "STORE": 2,
-        "ADD_C": 3,
-        "ADD_R": 3,
-        "SUB_C": 3,
-        "SUB_R": 3,
-        "MUL_C": 3,
-        "MUL_R": 3,
-        "DIV_C": 3,
-        "DIV_R": 3,
-        "MOD_C": 3,
-        "MOD_R": 3,
-        "JEQ_C": 3,
-        "JEQ_R": 3,
-        "JNE_C": 3,
-        "JNE_R": 3,
-        "JLT_C": 3,
-        "JLT_R": 3,
-        "JLE_C": 3,
-        "JLE_R": 3,
-        "JGT_C": 3,
-        "JGT_R": 3,
-        "JGE_C": 3,
-        "JGE_R": 3,
+from generator import AST, parse
+
+grammar: AST = {
+    "Program": {
+        "Top": ({"Cmd", "Label"}, ...),
     },
+    "Mode": ("IMM", "REG"),
+    "Op": ("ADD", "SUB", "MUL", "DIV", "MOD"),
+    "Rel": ("EQ", "NE", "LT", "LE", "GT", "GE"),
+    "Label": {
+        "LABEL": ("str",),
+    },
+    "Cmd": {
+        "MOV": ("Mode", "int", "int"),
+        "LOAD": ("int", "int"),
+        "STORE": ("int", "int"),
+        "OP": ("Op", "Mode", "int", "int", "int"),
+        "JMP": ("str",),
+        "JIF": ("Rel", "Mode", "int", "int", "str"),
+        "READ": ("int",),
+        "WRITE": ("int",),
+    }
 }
+
+parse(grammar, "syntax.py")
